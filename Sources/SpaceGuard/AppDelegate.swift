@@ -57,6 +57,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         store.scan(background: true) { [weak self] in
             MainActor.assumeIsolated { self?.checkLowSpace(afterScan: true) }
         }
+
+        // Menu-bar apps have no window, so on the very first launch show where SpaceGuard lives.
+        if !UserDefaults.standard.bool(forKey: "welcomed") {
+            UserDefaults.standard.set(true, forKey: "welcomed")
+            Task { @MainActor [weak self] in
+                try? await Task.sleep(for: .milliseconds(600))
+                self?.showPopover()
+            }
+        }
     }
 
     private func tick() {

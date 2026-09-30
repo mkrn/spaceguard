@@ -80,6 +80,13 @@ This builds a release binary, wraps it into `SpaceGuard.app`, signs it, copies i
 > through Xcode › Settings › Accounts. Set `SIGN_IDENTITY` to pick a different one. Without an
 > identity everything still works except notifications.
 
+## Releasing
+
+`./release.sh --publish` builds a universal (Apple silicon + Intel) app, signs it with a Developer ID
+certificate, notarizes and staples both the app and a DMG, checks them with Gatekeeper, and publishes
+a GitHub release. The one-time setup (certificate + `notarytool` credentials) is described at the top
+of [`release.sh`](release.sh).
+
 ## How it decides
 
 - **Age** is the latest of: file modification times inside the item, git activity for projects and

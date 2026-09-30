@@ -552,6 +552,15 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            Section {
+                HStack {
+                    Text("SpaceGuard \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev")")
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Link("github.com/mkrn/spaceguard", destination: URL(string: "https://github.com/mkrn/spaceguard")!)
+                }
+                .font(.caption)
+            }
         }
         .formStyle(.grouped)
     }
