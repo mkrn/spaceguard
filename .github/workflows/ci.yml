@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: swift build -c release
+      - name: Deletion self-test
+        run: .build/release/SpaceGuard --self-test "$RUNNER_TEMP"
+      - name: Scan the runner (smoke test)
+        timeout-minutes: 10
+        run: .build/release/SpaceGuard --scan | tail -4
