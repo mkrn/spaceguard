@@ -62,7 +62,16 @@ how long it has sat untouched. The list is ranked so the big, stale, safe-to-del
 
 ## Install
 
-Requires macOS 14 or later and Xcode 15 or later (or a Swift 5.9+ toolchain).
+**[⬇ Download SpaceGuard.dmg](https://github.com/mkrn/spaceguard/releases/latest/download/SpaceGuard.dmg)**
+It runs on macOS 14 or later, on Apple silicon or Intel.
+
+Open the DMG, drag SpaceGuard into Applications and launch it. Its icon appears in the menu bar. The
+app is signed with a Developer ID and notarized by Apple, so it opens without Gatekeeper warnings.
+To keep it running, turn on **Launch at login** in the gear menu.
+
+### Build from source
+
+Requires Xcode 15 or later (or a Swift 5.9+ toolchain).
 
 ```bash
 git clone https://github.com/mkrn/spaceguard.git
@@ -71,8 +80,7 @@ cd spaceguard
 ```
 
 This builds a release binary, wraps it into `SpaceGuard.app`, signs it, copies it to
-`/Applications` (or `~/Applications`) and launches it. To keep it running, turn on
-**Launch at login** in the gear menu.
+`/Applications` (or `~/Applications`) and launches it.
 
 > [!NOTE]
 > macOS refuses notification permission to ad-hoc-signed apps. `build.sh` therefore signs with the

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds a universal, Developer ID-signed, notarized and stapled SpaceGuard-<version>.dmg.
+# Builds a universal, Developer ID-signed, notarized and stapled SpaceGuard.dmg.
 # Usage: VERSION=0.1.0 ./release.sh [--publish]    (--publish also creates the GitHub release)
 #
 # One-time setup on the release machine:
@@ -17,7 +17,7 @@ APP=SpaceGuard
 VERSION="${VERSION:-$(sed -n 's/^VERSION="${VERSION:-\(.*\)}"$/\1/p' build.sh)}"
 PROFILE="${NOTARY_PROFILE:-spaceguard-notary}"
 IDENTITY="${DEVELOPER_ID:-$(security find-identity -v -p codesigning | awk -F'"' '/Developer ID Application/ {print $2; exit}')}"
-DMG="build/$APP-$VERSION.dmg"
+DMG="build/$APP.dmg"   # unversioned, so releases/latest/download/SpaceGuard.dmg always works
 
 fail() { echo "error: $*" >&2; exit 1; }
 [ -n "$VERSION" ] || fail "could not determine the version"
