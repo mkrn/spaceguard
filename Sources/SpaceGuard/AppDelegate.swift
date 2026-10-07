@@ -112,12 +112,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     private func updateButton() {
         guard let button = statusItem?.button else { return }
         let level = store.level
-        let symbol = level == .ok ? "internaldrive" : "externaldrive.badge.exclamationmark"
-        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "SpaceGuard")
-            ?? NSImage(systemSymbolName: "internaldrive", accessibilityDescription: "SpaceGuard")
-        image?.isTemplate = true
-        button.image = image
-        button.title = store.settings.showFreeInMenuBar && store.total > 0 ? " " + Fmt.compact(store.available) : ""
+        button.title = store.settings.showFreeInMenuBar && store.total > 0 ? " " + Fmt.bytes(store.available).replacingOccurrences(of: " ", with: "") : ""
         button.contentTintColor = level == .critical ? .systemRed : level == .low ? .systemOrange : nil
         button.toolTip = "SpaceGuard: \(Fmt.bytes(store.available)) available"
     }
