@@ -28,8 +28,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
             button.target = self
             button.action = #selector(togglePopover(_:))
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
-            button.imagePosition = .imageLeading
-            button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+            button.font = NSFont.monospacedDigitSystemFont(ofSize: NSFont.menuBarFont(ofSize: 0).pointSize, weight: .regular)
         }
 
         popover.behavior = .transient
@@ -38,7 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         popover.contentViewController = NSHostingController(rootView: PanelView(store: store, settings: store.settings))
 
         store.$available
-            .combineLatest(store.settings.$showFreeInMenuBar, store.settings.$lowSpaceGB)
+            .combineLatest(store.settings.$lowSpaceGB)
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in self?.updateButton() }
             .store(in: &bag)
@@ -109,17 +108,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         }
     }
 
+    /// The menu bar shows only the free space ("117GB"): orange when it's low, red when it's critical.
     private func updateButton() {
         guard let button = statusItem?.button else { return }
-        let level = store.level
-        let symbol = level == .ok ? "internaldrive" : "externaldrive.badge.exclamationmark"
-        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "SpaceGuard")
-            ?? NSImage(systemSymbolName: "internaldrive", accessibilityDescription: "SpaceGuard")
-        image?.isTemplate = true
-        button.image = image
-        button.title = store.settings.showFreeInMenuBar && store.total > 0 ? " " + Fmt.compact(store.available) : ""
-        button.contentTintColor = level == .critical ? .systemRed : level == .low ? .systemOrange : nil
+        let text = store.total > 0 ? Fmt.compact(store.available) : "SpaceGuard"
+        switch store.level {
+        case .ok:
+            button.title = text   // the menu bar's own text color, which follows light and dark menu bars
+        case .low, .critical:
+            // contentTintColor tints a status button's image but not its title, so color the text itself.
+            let color: NSColor = store.level == .critical ? .systemRed : .systemOrange
+            button.attributedTitle = NSAttributedString(string: text, attributes: [
+                .font: button.font ?? NSFont.menuBarFont(ofSize: 0), .foregroundColor: color,
+            ])
+        }
         button.toolTip = "SpaceGuard: \(Fmt.bytes(store.available)) available"
+        button.setAccessibilityLabel("SpaceGuard, \(Fmt.bytes(store.available)) available")
     }
 
     @objc private func togglePopover(_ sender: Any?) {

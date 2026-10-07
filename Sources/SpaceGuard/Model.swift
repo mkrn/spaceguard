@@ -188,12 +188,13 @@ enum Fmt {
         return "\(b) B"
     }
 
-    /// Menu bar text: "3.3G", "87G".
+    /// Menu bar text: "117GB", "9.5GB", "640MB", "1.2TB".
     static func compact(_ b: Int64) -> String {
-        let gb = Double(b) / 1e9
-        if gb >= 1000 { return String(format: "%.1fT", gb / 1000) }
-        if gb >= 10 { return String(format: "%.0fG", gb) }
-        return String(format: "%.1fG", gb)
+        let d = Double(b)
+        if d >= 1e12 { return String(format: "%.1fTB", d / 1e12) }
+        if d >= 1e10 { return String(format: "%.0fGB", d / 1e9) }
+        if d >= 1e9 { return String(format: "%.1fGB", d / 1e9) }
+        return String(format: "%.0fMB", d / 1e6)
     }
 
     static func age(_ item: CleanItem) -> String {

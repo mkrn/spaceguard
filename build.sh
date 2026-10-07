@@ -11,7 +11,7 @@ cd "$(dirname "$0")"
 
 APP=SpaceGuard
 BUNDLE_ID=io.github.mkrn.spaceguard
-VERSION="${VERSION:-0.1.0}"
+VERSION="${VERSION:-0.1.1}"
 OUT=build/$APP.app
 
 ARCH_FLAGS=()

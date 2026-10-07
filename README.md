@@ -27,9 +27,9 @@ how long it has sat untouched. The list is ranked so the big, stale, safe-to-del
 
 ## Features
 
-- **Watches free space from the menu bar.** The icon shows how much space is left and turns orange,
-  then red, as the disk fills. When space drops below your threshold, you get a notification saying
-  how much can be reclaimed.
+- **Watches free space from the menu bar.** The menu bar shows how much space is left, like `117GB`,
+  in orange, then red, as the disk fills. When space drops below your threshold, you get a
+  notification saying how much can be reclaimed.
 - **Knows where dev junk lives.** It covers 100+ cache locations and build-artifact types across
   Xcode, simulators, Android, Node, Python, Rust, Go, JVM, Ruby, Flutter, Homebrew, Docker, editors
   and AI tools, plus the build output inside your own projects.
@@ -65,8 +65,8 @@ how long it has sat untouched. The list is ranked so the big, stale, safe-to-del
 **[⬇ Download SpaceGuard.dmg](https://github.com/mkrn/spaceguard/releases/latest/download/SpaceGuard.dmg)**
 It runs on macOS 14 or later, on Apple silicon or Intel.
 
-Open the DMG, drag SpaceGuard into Applications and launch it. Its icon appears in the menu bar. The
-app is signed with a Developer ID and notarized by Apple, so it opens without Gatekeeper warnings.
+Open the DMG, drag SpaceGuard into Applications and launch it. Your free space, like `117GB`, appears
+in the menu bar; click it to open the panel. The app is signed with a Developer ID and notarized by Apple, so it opens without Gatekeeper warnings.
 To keep it running, turn on **Launch at login** in the gear menu.
 
 ### Build from source

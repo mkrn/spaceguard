@@ -397,10 +397,12 @@ struct Tag: View {
     var body: some View {
         Text(text)
             .font(.system(size: 9, weight: .semibold))
+            .lineLimit(1)
             .padding(.horizontal, 5)
             .padding(.vertical, 1)
             .background(Capsule().fill(color.opacity(0.16)))
             .foregroundStyle(color)
+            .fixedSize()   // never squeezed: next to a long title it used to wrap one letter per line
     }
 }
 
@@ -427,17 +429,8 @@ struct ItemRow: View {
             .padding(.top, 2)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 5) {
-                    Text(item.title)
-                        .font(.system(size: 13, weight: .semibold))
+                    titleLine
                         .lineLimit(1)
-                        .layoutPriority(1)
-                    if let project = item.project {
-                        Text(project)
-                            .font(.system(size: 12))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                    }
                     if let agent = item.agent { Tag(text: agent.label, color: agent.tint) }
                     if item.inUse { Tag(text: "in use", color: .blue) }
                 }
@@ -466,6 +459,14 @@ struct ItemRow: View {
         .contentShape(Rectangle())
         .onTapGesture(perform: toggle)
         .onHover { hover = $0 }
+    }
+
+    /// Title and project as one text, so a long title truncates as a whole instead of crushing the project label.
+    private var titleLine: Text {
+        let title = Text(item.title).font(.system(size: 13, weight: .semibold))
+        // A worktree's title already names its repo; "worktree of <repo>" would only repeat it.
+        guard let project = item.project, item.category != .worktree else { return title }
+        return title + Text("  " + project).font(.system(size: 12)).foregroundColor(.secondary)
     }
 
     private var meta: Text {
@@ -504,8 +505,7 @@ struct SettingsView: View {
                 Toggle("Send a notification", isOn: $settings.notify)
                 Toggle("Scan automatically when space runs low", isOn: $settings.autoScanWhenLow)
             }
-            Section("Menu bar") {
-                Toggle("Show free space next to the icon", isOn: $settings.showFreeInMenuBar)
+            Section("General") {
                 Toggle("Launch at login", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, on in
                         do {

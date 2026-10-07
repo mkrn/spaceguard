@@ -59,7 +59,6 @@ final class Settings: ObservableObject {
     private let defaults = UserDefaults.standard
 
     @Published var lowSpaceGB: Double { didSet { defaults.set(lowSpaceGB, forKey: "lowSpaceGB") } }
-    @Published var showFreeInMenuBar: Bool { didSet { defaults.set(showFreeInMenuBar, forKey: "showFreeInMenuBar") } }
     @Published var minItemMB: Int { didSet { defaults.set(minItemMB, forKey: "minItemMB") } }
     @Published var autoScanWhenLow: Bool { didSet { defaults.set(autoScanWhenLow, forKey: "autoScanWhenLow") } }
     @Published var notify: Bool { didSet { defaults.set(notify, forKey: "notify") } }
@@ -67,9 +66,8 @@ final class Settings: ObservableObject {
     @Published var ignored: Set<String> { didSet { defaults.set(Array(ignored), forKey: "ignored") } }
 
     init() {
-        defaults.register(defaults: ["lowSpaceGB": 20.0, "showFreeInMenuBar": true, "minItemMB": 50, "autoScanWhenLow": true, "notify": true])
+        defaults.register(defaults: ["lowSpaceGB": 20.0, "minItemMB": 50, "autoScanWhenLow": true, "notify": true])
         lowSpaceGB = defaults.double(forKey: "lowSpaceGB")
-        showFreeInMenuBar = defaults.bool(forKey: "showFreeInMenuBar")
         minItemMB = defaults.integer(forKey: "minItemMB")
         autoScanWhenLow = defaults.bool(forKey: "autoScanWhenLow")
         notify = defaults.bool(forKey: "notify")
